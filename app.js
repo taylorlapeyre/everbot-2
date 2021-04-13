@@ -33,14 +33,14 @@ client.on('message', (msg) => {
     for (const fullTerm of matches) {
       const term = fullTerm.slice(0, -2);
 
-      redis.hgetall(KARMA_KEY, (err, existingPoints) => {
+      redis.hgetall(KARMA_KEY, (err, existingPoints = {}) => {
         if (err) {
           console.error(err);
         }
 
         console.log(existingPoints);
 
-        let points = existingPoints ? Number(existingPoints[term]) : 0;
+        let points = existingPoints[term] ? Number(existingPoints[term]) : 0;
 
         console.log('points', points);
         points++;
