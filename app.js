@@ -20,8 +20,6 @@ client.on('ready', () => {
 
 client.login(process.env.BOT_TOKEN);
 
-const points = new Map();
-
 client.on('message', (msg) => {
   console.log('============================================');
 
