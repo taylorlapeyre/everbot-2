@@ -63,7 +63,7 @@ client.on('message', (msg) => {
         console.error(err);
       }
 
-      for (const [key, points] of value.entries()) {
+      for (const [key, points] of Object.entries(value)) {
         message += `${key}: ${points}\n`;
       }
     });
