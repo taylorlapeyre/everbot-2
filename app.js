@@ -55,18 +55,15 @@ client.on('message', (msg) => {
 
     redis.hgetall(KARMA_KEY_PREFIX, (err, value) => {
       console.log(value);
+
       if (err) {
         console.error(err);
       }
 
-      for (const [key, value] of value.entries()) {
-        message += `${key}: ${value}\n`;
+      for (const [key, points] of value.entries()) {
+        message += `${key}: ${points}\n`;
       }
     });
-
-    for (const key of points.keys()) {
-      message += `${key}: ${points.get(key)}\n`;
-    }
 
     msg.reply(message);
   }
