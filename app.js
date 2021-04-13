@@ -31,19 +31,21 @@ client.on('message', (msg) => {
   if (matches && matches.length > 0) {
     for (const fullTerm of matches) {
       const term = fullTerm.slice(0, -2);
-      const key = `${KARMA_KEY_PREFIX}${term}`;
 
-      redis.get(key, (err, existingPoints) => {
+      redis.hgetall(KARMA_KEY_PREFIX, (err, existingPoints) => {
         if (err) {
           console.error(err);
         }
 
         console.log(existingPoints);
-        let points = Number(existingPoints);
+
+        let points = Number(existingPoints[term]);
+
         console.log('points', points);
         points++;
         console.log(points)
-        redis.set(key, points, () => {
+
+        redis.hmset([key, term, points], () => {
           msg.reply(`${term}: ${points}`);
         });
       })
