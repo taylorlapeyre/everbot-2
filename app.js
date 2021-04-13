@@ -39,7 +39,7 @@ client.on('message', (msg) => {
 
         console.log(existingPoints);
 
-        let points = Number(existingPoints[term]);
+        let points = existingPoints ? Number(existingPoints[term]) : 0;
 
         console.log('points', points);
         points++;
