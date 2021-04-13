@@ -6,7 +6,7 @@ const Redis = require("redis");
 const redis = Redis.createClient(process.env.REDIS_URL);
 const client = new Discord.Client();
 
-const KARMA_KEY_PREFIX = 'everbot_karma_'
+const KARMA_KEY = 'everbot_karma'
 
 redis.on("error", (error) => {
   console.error(error);
@@ -21,9 +21,10 @@ client.login(process.env.BOT_TOKEN);
 const points = new Map();
 
 client.on('message', (msg) => {
-  console.log('============================================')
+  console.log('============================================');
+
   if (msg.content.toLowerCase() === 'Hello') {
-    msg.reply('Hi');
+    msg.reply('World');
   }
 
   const matches = msg.content.match(/(\w+)\+\+/g);
@@ -32,7 +33,7 @@ client.on('message', (msg) => {
     for (const fullTerm of matches) {
       const term = fullTerm.slice(0, -2);
 
-      redis.hgetall(KARMA_KEY_PREFIX, (err, existingPoints) => {
+      redis.hgetall(KARMA_KEY, (err, existingPoints) => {
         if (err) {
           console.error(err);
         }
@@ -45,7 +46,7 @@ client.on('message', (msg) => {
         points++;
         console.log(points)
 
-        redis.hmset([key, term, points], () => {
+        redis.hmset([KARMA_KEY, term, points], () => {
           msg.reply(`${term}: ${points}`);
         });
       })
@@ -55,7 +56,7 @@ client.on('message', (msg) => {
   if (msg.content === 'everbot points') {
     let message = '\n';
 
-    redis.hgetall(KARMA_KEY_PREFIX, (err, value) => {
+    redis.hgetall(KARMA_KEY, (err, value) => {
       console.log(value);
 
       if (err) {
