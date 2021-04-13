@@ -2,11 +2,13 @@ var http = require('http');
 require('dotenv').config();
 const Discord = require('discord.js');
 const Redis = require("redis");
+const fetch = require('node-fetch');
 
 const redis = Redis.createClient(process.env.REDIS_URL);
 const client = new Discord.Client();
 
 const KARMA_KEY = 'everbot_karma'
+const imageQueryUrl = (q) => `www.googleapis.com/customsearch/v1?q=${encodeURIComponent(q)}&searchType=image&safe=high&fields=items(link)&cx=018286577215759953988%3Ak2zgjf6rwcm&key=AIzaSyDWj4vC3DUpwaEwJzhvNk8-URBjN66rgpM`
 
 redis.on("error", (error) => {
   console.error(error);
@@ -23,8 +25,18 @@ const points = new Map();
 client.on('message', (msg) => {
   console.log('============================================');
 
-  if (msg.content.toLowerCase() === 'Hello') {
+  if (msg.content.toLowerCase() === 'hello') {
     msg.reply('World');
+  }
+
+  if (msg.content.match(/^everbot image me/)) {
+    const matches = msg.content.match(/^everbot image me (.*)$/);
+    if (matches.length > 0) {
+      fetch(imageQueryUrl(matches[0])).then(response => response.json()).then(json => {
+        const { items } = json;
+        msg.reply(items[0].link);
+      })
+    }
   }
 
   const matches = msg.content.match(/(\w+)\+\+/g);
