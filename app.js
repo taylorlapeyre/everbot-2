@@ -66,9 +66,9 @@ client.on('message', (msg) => {
       for (const [key, points] of Object.entries(value)) {
         message += `${key}: ${points}\n`;
       }
-    });
 
-    msg.reply(message);
+      msg.reply(message);
+    });
   }
 });
 
