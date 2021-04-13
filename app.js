@@ -20,6 +20,7 @@ client.login(process.env.BOT_TOKEN);
 const points = new Map();
 
 client.on('message', (msg) => {
+  console.log('============================================')
   if (msg.content.toLowerCase() === 'Hello') {
     msg.reply('Hi');
   }
@@ -32,8 +33,11 @@ client.on('message', (msg) => {
       const key = `${KARMA_KEY_PREFIX}${term}`;
 
       redis.get(key, (existingPoints) => {
+        console.log(existingPoints);
         let points = Number(existingPoints);
+        console.log('points', points);
         points++;
+        console.log(points)
         redis.set(key, points, () => {
           msg.reply(`${term}: ${points}`);
         });
@@ -45,6 +49,7 @@ client.on('message', (msg) => {
     let message = '\n';
 
     redis.hgetall(KARMA_KEY_PREFIX, (err, value) => {
+      console.log(value);
       if (err) {
         console.log(err);
       }
