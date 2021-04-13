@@ -8,7 +8,7 @@ const redis = Redis.createClient(process.env.REDIS_URL);
 const client = new Discord.Client();
 
 const KARMA_KEY = 'everbot_karma'
-const imageQueryUrl = (q) => `www.googleapis.com/customsearch/v1?q=${encodeURIComponent(q)}&searchType=image&safe=high&fields=items(link)&cx=018286577215759953988%3Ak2zgjf6rwcm&key=AIzaSyDWj4vC3DUpwaEwJzhvNk8-URBjN66rgpM`
+const imageQueryUrl = (q) => `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(q)}&searchType=image&safe=high&fields=items(link)&cx=018286577215759953988%3Ak2zgjf6rwcm&key=AIzaSyDWj4vC3DUpwaEwJzhvNk8-URBjN66rgpM`
 
 redis.on("error", (error) => {
   console.error(error);
