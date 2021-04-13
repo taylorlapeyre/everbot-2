@@ -1,3 +1,4 @@
+var http = require('http');
 require('dotenv').config();
 const Discord = require('discord.js');
 const Redis = require("redis");
@@ -32,7 +33,11 @@ client.on('message', (msg) => {
       const term = fullTerm.slice(0, -2);
       const key = `${KARMA_KEY_PREFIX}${term}`;
 
-      redis.get(key, (existingPoints) => {
+      redis.get(key, (err, existingPoints) => {
+        if (err) {
+          console.error(err);
+        }
+
         console.log(existingPoints);
         let points = Number(existingPoints);
         console.log('points', points);
@@ -51,7 +56,7 @@ client.on('message', (msg) => {
     redis.hgetall(KARMA_KEY_PREFIX, (err, value) => {
       console.log(value);
       if (err) {
-        console.log(err);
+        console.error(err);
       }
 
       for (const [key, value] of value.entries()) {
@@ -66,3 +71,9 @@ client.on('message', (msg) => {
     msg.reply(message);
   }
 });
+
+
+http.createServer((req, res) => {
+  res.write('Hello World!'); //write a response to the client
+  res.end(); //end the response
+}).listen(process.env.PORT);
