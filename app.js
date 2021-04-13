@@ -2,7 +2,7 @@ require('dotenv').config();
 const Discord = require('discord.js');
 const Redis = require("redis");
 
-const redis = Redis.createClient();
+const redis = Redis.createClient(process.env.REDIS_URL);
 const client = new Discord.Client();
 
 const KARMA_KEY_PREFIX = 'everbot_karma_'
